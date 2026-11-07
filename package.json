@@ -1,15 +1,28 @@
 {
   "name": "@storylinkpro/instagram-stories-api",
-  "version": "0.1.0",
-  "description": "Typed, zero-dependency client and CLI for the Instagram Graph API: read Instagram Stories, posts, reels and their insights.",
+  "version": "0.1.1",
+  "description": "Instagram Graph API client and CLI for Node.js and TypeScript: read Instagram Stories, posts, reels and their insights (views, reach, replies, likes, saves, shares). Typed, zero dependencies.",
   "keywords": [
     "instagram",
     "instagram-api",
     "instagram-graph-api",
     "instagram-stories",
+    "instagram-story",
     "instagram-insights",
-    "meta",
-    "typescript"
+    "instagram-analytics",
+    "instagram-reels",
+    "instagram-business",
+    "meta-graph-api",
+    "facebook-graph-api",
+    "graph-api",
+    "social-media",
+    "analytics",
+    "insights",
+    "api-client",
+    "cli",
+    "typescript",
+    "nodejs",
+    "zero-dependency"
   ],
   "homepage": "https://github.com/storylinkpro/instagram-stories-api#readme",
   "bugs": {
@@ -35,9 +48,10 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
     "README.md",
-    "LICENSE"
+    "dist"
   ],
   "sideEffects": false,
   "engines": {

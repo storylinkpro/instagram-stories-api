@@ -1,8 +1,13 @@
 # @storylinkpro/instagram-stories-api
 
-A typed client and CLI for the Instagram Graph API. It reads an account's Stories, posts and reels, and their insights. It has no dependencies. It needs Node 20+ or another runtime with `fetch`.
+[![npm](https://img.shields.io/npm/v/@storylinkpro/instagram-stories-api)](https://www.npmjs.com/package/@storylinkpro/instagram-stories-api)
+[![CI](https://github.com/storylinkpro/instagram-stories-api/actions/workflows/ci.yml/badge.svg)](https://github.com/storylinkpro/instagram-stories-api/actions/workflows/ci.yml)
+[![types](https://img.shields.io/npm/types/@storylinkpro/instagram-stories-api)](https://www.npmjs.com/package/@storylinkpro/instagram-stories-api)
+[![license](https://img.shields.io/npm/l/@storylinkpro/instagram-stories-api)](LICENSE)
 
-Use it in a script, a cron job or your own dashboard.
+**An Instagram Graph API client and CLI for Node.js and TypeScript.** It reads Instagram Stories, posts and reels. It also reads their insights: views, reach, replies, likes, comments, saves and shares. It has no dependencies. It needs Node 20+ or another runtime with `fetch`.
+
+Use it in a script, a cron job or your own Instagram analytics dashboard.
 
 > Unofficial. Meta did not make this package and does not support it. It calls Meta's public Graph API at `graph.facebook.com`.
 
@@ -12,7 +17,7 @@ Use it in a script, a cron job or your own dashboard.
 npm install @storylinkpro/instagram-stories-api
 ```
 
-## Quick start
+## Quick start: read Instagram story insights
 
 ```ts
 import { createClient } from "@storylinkpro/instagram-stories-api";
@@ -111,7 +116,7 @@ try {
 }
 ```
 
-### Rate-limit usage
+### Instagram API rate limits
 
 Meta sends usage headers on each response. `ig.lastUsage` holds the most recent ones, and `error.usage` holds the ones of a failed call:
 
@@ -122,7 +127,7 @@ ig.lastUsage?.businessUseCase; // from x-business-use-case-usage, per business o
 
 The client does not retry. You decide when to call again.
 
-## Get a token
+## Get an Instagram Graph API access token
 
 This version uses the Instagram API with Facebook Login. You need:
 
@@ -134,9 +139,10 @@ To find the Instagram account id, call `GET /me/accounts?fields=instagram_busine
 
 Keep the token on the server. Do not send it to the browser.
 
-## Made by Storylink
+## Related
 
-Made by [Storylink](https://storylink.pro). Storylink schedules Instagram Stories, posts and reels.
+- [Storylink](https://storylink.pro) schedules Instagram Stories, posts and reels, and shows their results. Storylink made this package.
+- [`storylink-mcp`](https://www.npmjs.com/package/storylink-mcp) connects Claude and other AI assistants to your Storylink Instagram analytics.
 
 ## License
 
