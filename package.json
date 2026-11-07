@@ -1,0 +1,62 @@
+{
+  "name": "instagram-stories-api",
+  "version": "0.1.0",
+  "description": "Typed, zero-dependency client and CLI for the Instagram Graph API: read Instagram Stories, posts, reels and their insights.",
+  "keywords": [
+    "instagram",
+    "instagram-api",
+    "instagram-graph-api",
+    "instagram-stories",
+    "instagram-insights",
+    "meta",
+    "typescript"
+  ],
+  "homepage": "https://github.com/storylinkpro/instagram-stories-api#readme",
+  "bugs": {
+    "url": "https://github.com/storylinkpro/instagram-stories-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storylinkpro/instagram-stories-api.git"
+  },
+  "license": "MIT",
+  "author": "Storylink (https://storylink.pro)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "instagram-stories-api": "dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm test && npm run build",
+    "prepublishOnly": "npm run check"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
