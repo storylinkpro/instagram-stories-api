@@ -1,6 +1,6 @@
 {
   "name": "@storylinkpro/instagram-stories-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Instagram Graph API client and CLI for Node.js and TypeScript: read Instagram Stories, posts, reels and their insights (views, reach, replies, likes, saves, shares). Typed, zero dependencies.",
   "keywords": [
     "instagram",

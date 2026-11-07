@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- The README lists `pages_show_list` with the other permissions. `GET /me/accounts` needs it to return your Pages.
+- The README links to a step-by-step guide for the access token.
+
 ## 0.1.2
 
 - The client sends the access token in the `Authorization` header, not in the URL. Proxy and server logs no longer record it. The client also removes the token from the `paging.next` URLs that Meta returns.

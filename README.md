@@ -132,10 +132,10 @@ The client does not retry. You decide when to call again.
 This version uses the Instagram API with Facebook Login. You need:
 
 1. An Instagram professional account (Business or Creator) that is linked to a Facebook Page.
-2. A Meta app with the `instagram_basic`, `instagram_manage_insights` and `pages_read_engagement` permissions.
+2. A Meta app with the `instagram_basic`, `instagram_manage_insights`, `pages_show_list` and `pages_read_engagement` permissions. Without `pages_show_list`, `GET /me/accounts` does not return your Pages.
 3. A Facebook User or Page access token. For a quick test, get one in the [Graph API Explorer](https://developers.facebook.com/tools/explorer/).
 
-To find the Instagram account id, call `GET /me/accounts?fields=instagram_business_account` with the token. See Meta's [Instagram Platform docs](https://developers.facebook.com/docs/instagram-platform) for the full steps.
+To find the Instagram account id, call `GET /me/accounts?fields=instagram_business_account` with the token. For each step, and for a long-lived token, read [Get an Instagram Graph API access token](https://storylink.pro/en/guides/instagram-graph-api-access-token). Meta's [Instagram Platform docs](https://developers.facebook.com/docs/instagram-platform) have the full reference.
 
 Keep the token on the server. Do not send it to the browser.
 
