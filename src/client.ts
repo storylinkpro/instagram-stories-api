@@ -234,10 +234,21 @@ function metricValues(body: InsightBody): Map<string, number> {
   return out;
 }
 
+/** Aborts when either signal aborts. `AbortSignal.any` needs Node 20.3+, so
+ *  older runtimes link the two by hand and keep the timeout. */
 function combineSignals(a: AbortSignal | undefined, b: AbortSignal): AbortSignal {
   if (!a) return b;
   const any = (AbortSignal as { any?: (s: AbortSignal[]) => AbortSignal }).any;
-  return any ? any([a, b]) : a;
+  if (any) return any([a, b]);
+  const ctrl = new AbortController();
+  for (const s of [a, b]) {
+    if (s.aborted) {
+      ctrl.abort(s.reason);
+      return ctrl.signal;
+    }
+    s.addEventListener("abort", () => ctrl.abort(s.reason), { once: true });
+  }
+  return ctrl.signal;
 }
 
 export function createClient(options: ClientOptions): InstagramClient {
@@ -260,13 +271,15 @@ export function createClient(options: ClientOptions): InstagramClient {
   const userId = (o?: CallOptions) => checkId(o?.igUserId ?? options.igUserId, "igUserId");
 
   async function call<T>(url: URL, signal?: AbortSignal): Promise<T> {
-    url.searchParams.set("access_token", token);
+    // The token goes in a header, not the query string, so it stays out of
+    // proxy and server logs. Meta adds it to `paging.next` URLs: remove it.
+    url.searchParams.delete("access_token");
     const path = url.pathname;
     let res: Response;
     try {
       res = await doFetch(url.toString(), {
         method: "GET",
-        headers: { accept: "application/json" },
+        headers: { accept: "application/json", authorization: `Bearer ${token}` },
         signal: combineSignals(signal, AbortSignal.timeout(timeoutMs)),
       });
     } catch (e) {

@@ -43,7 +43,9 @@ describe("account", () => {
     expect(url.searchParams.get("fields")).toBe(
       "id,username,name,followers_count,follows_count,media_count,profile_picture_url",
     );
-    expect(url.searchParams.get("access_token")).toBe(TOKEN);
+    // The token goes in a header, so it stays out of URLs and proxy logs.
+    expect(url.searchParams.has("access_token")).toBe(false);
+    expect(m.auths[0]).toBe(`Bearer ${TOKEN}`);
     expect(a).toEqual({
       id: IG,
       username: "storylink",
@@ -70,6 +72,9 @@ describe("stories", () => {
       { body: { data: [{ id: "2", media_type: "VIDEO" }], paging: {} } },
     );
     const s = await client(m).stories();
+    // Meta puts the token in paging.next. The client removes it from the URL.
+    expect(m.calls[1]!.searchParams.has("access_token")).toBe(false);
+    expect(m.calls[1]!.searchParams.get("after")).toBe("abc");
     expect(m.calls[0]!.pathname).toBe(`/v25.0/${IG}/stories`);
     expect(m.calls[0]!.searchParams.get("fields")).toBe(
       "id,media_type,media_product_type,timestamp,permalink,caption,media_url,thumbnail_url",
@@ -110,7 +115,7 @@ describe("media", () => {
     const m = mockFetch({ body: { data: [] } });
     const page = await client(m).media();
     const keys = [...m.calls[0]!.searchParams.keys()].sort();
-    expect(keys).toEqual(["access_token", "fields"]);
+    expect(keys).toEqual(["fields"]);
     expect(page).toEqual({ data: [], after: null, hasNext: false });
   });
 
@@ -130,7 +135,8 @@ describe("media", () => {
     expect(ids).toEqual(["1", "2", "3"]);
     expect(m.calls).toHaveLength(2);
     expect(m.calls[1]!.searchParams.get("after")).toBe("p2");
-    expect(m.calls[1]!.searchParams.get("access_token")).toBe(TOKEN);
+    expect(m.calls[1]!.searchParams.has("access_token")).toBe(false);
+    expect(m.auths[1]).toBe(`Bearer ${TOKEN}`);
   });
 
   it("iterateMedia reads every page when there is no max", async () => {
@@ -384,5 +390,25 @@ describe("usage headers", () => {
     const e = (await client(m).account().catch((x: unknown) => x)) as InstagramApiError;
     expect(e.usage!.app).toBeNull();
     expect(e.usage!.businessUseCase[IG]).toHaveLength(1);
+  });
+});
+
+describe("timeout without AbortSignal.any", () => {
+  it("still times out when the caller passes its own signal", async () => {
+    const any = (AbortSignal as { any?: unknown }).any;
+    (AbortSignal as { any?: unknown }).any = undefined;
+    try {
+      const hang = (async (_i: unknown, init?: RequestInit) =>
+        new Promise((_res, rej) => {
+          init?.signal?.addEventListener("abort", () => rej(init.signal!.reason));
+        })) as typeof fetch;
+      const ig = createClient({ accessToken: TOKEN, igUserId: "1", fetch: hang, timeoutMs: 20 });
+      await expect(ig.account({ signal: new AbortController().signal })).rejects.toMatchObject({
+        status: 0,
+        type: "Timeout",
+      });
+    } finally {
+      (AbortSignal as { any?: unknown }).any = any;
+    }
   });
 });

@@ -17,7 +17,7 @@ async function cli(argv: string[], replies: Reply[] = [], env: Record<string, st
     now: () => NOW,
   });
   expect(stdout + stderr).not.toContain(TOKEN);
-  return { code, stdout, stderr, calls: m.calls };
+  return { code, stdout, stderr, calls: m.calls, auths: m.auths };
 }
 
 describe("help and usage errors", () => {
@@ -78,7 +78,8 @@ describe("token and account sources", () => {
     const r = await cli(["account", "--token", "EAAflagTOKENxyz", "--account", "42"], [{ body: { id: "42" } }]);
     expect(r.code).toBe(0);
     expect(r.calls[0]!.pathname).toBe("/v25.0/42");
-    expect(r.calls[0]!.searchParams.get("access_token")).toBe("EAAflagTOKENxyz");
+    expect(r.auths[0]).toBe("Bearer EAAflagTOKENxyz");
+    expect(r.calls[0]!.searchParams.has("access_token")).toBe(false);
     expect(r.stdout).not.toContain("EAAflagTOKENxyz");
   });
 
