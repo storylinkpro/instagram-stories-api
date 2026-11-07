@@ -1,4 +1,4 @@
-# instagram-stories-api
+# @storylinkpro/instagram-stories-api
 
 A typed client and CLI for the Instagram Graph API. It reads an account's Stories, posts and reels, and their insights. It has no dependencies. It needs Node 20+ or another runtime with `fetch`.
 
@@ -9,13 +9,13 @@ Use it in a script, a cron job or your own dashboard.
 ## Install
 
 ```sh
-npm install instagram-stories-api
+npm install @storylinkpro/instagram-stories-api
 ```
 
 ## Quick start
 
 ```ts
-import { createClient } from "instagram-stories-api";
+import { createClient } from "@storylinkpro/instagram-stories-api";
 
 const ig = createClient({
   accessToken: process.env.INSTAGRAM_ACCESS_TOKEN!,
@@ -35,8 +35,10 @@ for (const story of await ig.stories()) {
 You can query the API from a terminal without an install:
 
 ```sh
-npx instagram-stories-api stories
+npx @storylinkpro/instagram-stories-api stories
 ```
+
+After `npm install -g @storylinkpro/instagram-stories-api`, the command is `instagram-stories-api`.
 
 ```text
 ID                 TYPE   POSTED (UTC)      PERMALINK
@@ -99,7 +101,7 @@ A failed call throws `InstagramApiError`. It has `status`, and Meta's `code`, `s
 A network error or a timeout has `status` 0. The message never contains the access token.
 
 ```ts
-import { InstagramApiError } from "instagram-stories-api";
+import { InstagramApiError } from "@storylinkpro/instagram-stories-api";
 
 try {
   await ig.stories();

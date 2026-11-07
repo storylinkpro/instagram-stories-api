@@ -1,5 +1,5 @@
 {
-  "name": "instagram-stories-api",
+  "name": "@storylinkpro/instagram-stories-api",
   "version": "0.1.0",
   "description": "Typed, zero-dependency client and CLI for the Instagram Graph API: read Instagram Stories, posts, reels and their insights.",
   "keywords": [
