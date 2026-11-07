@@ -95,7 +95,7 @@ Methods that read an account take `igUserId` to use another account than the cli
 
 A failed call throws `InstagramApiError`. It has `status`, and Meta's `code`, `subcode`, `type`, `fbtraceId` and `message`. It also has these flags:
 
-- `isAuthError`: code 190, or subcode 458, 460, 463 or 467. The token is expired, was revoked, or is not valid. Get a new token.
+- `isAuthError`: code 190, or subcode 458, 460, 463 or 467. The token expired, someone revoked it, or it is not valid. Get a new token.
 - `isRateLimit`: code 4, 17, 32, 613, 80001 or 80002. Meta throttled the app or the account. Wait before you try again.
 
 A network error or a timeout has `status` 0. The message never contains the access token.
@@ -136,7 +136,7 @@ Keep the token on the server. Do not send it to the browser.
 
 ## Made by Storylink
 
-Made by Storylink — schedule Instagram Stories, posts and reels: https://storylink.pro
+Made by [Storylink](https://storylink.pro). Storylink schedules Instagram Stories, posts and reels.
 
 ## License
 
